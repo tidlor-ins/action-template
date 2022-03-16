@@ -23,6 +23,6 @@ jobs:
       uses: Azure/container-scan@v0.1
       with:
         # Docker image to scan
-        image-name: {{ inputs.imagename }}
+        image-name: ${{ inputs.imagename }}
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
