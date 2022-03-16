@@ -1,0 +1,37 @@
+name: Reusable workflow example
+
+on:
+  workflow_call:
+    inputs:
+      imagename:
+        required: true
+        type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_PASSWORD:
+        required: true
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v2
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag ${{ inputs.imagename }}:$(date +%s)
+    - name: Set Tag
+      run:  echo "TAG=$(echo $GITHUB_SHA)" >> $GITHUB_ENV;
+    - name: Set docker secret
+      run: |  
+        echo "DOCKERHUB_USERNAME=$(echo $secrets.DOCKERHUB_USERNAME)" >> $GITHUB_ENV;
+        echo "DOCKERHUB_PASSWORD=$(echo $secrets.DOCKERHUB_PASSWORD)" >> $GITHUB_ENV;
+
+    - name: Kaniko build
+      uses: aevea/action-kaniko@master
+      with:
+        image: insuranceitteam/${{ inputs.imagename }}
+        tag: ${{ env.TAG }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        cache: true
+        cache_registry: insuranceitteam/${{ inputs.imagename }}
