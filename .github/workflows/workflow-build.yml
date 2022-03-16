@@ -31,7 +31,7 @@ jobs:
     - name: Set Tag
       run: echo "TAG=$(echo $GITHUB_SHA)" >> $GITHUB_ENV;
     - id: step1
-      run: echo "::set-output name=imgname::insuranceitteam/${{ inputs.imagename }}:${{ env.TAG }}"
+      run: echo "::set-output name=imgname::${{ inputs.imagename }}:${{ env.TAG }}"
     - name: Kaniko build
       uses: aevea/action-kaniko@master
       with:
