@@ -6,6 +6,10 @@ on:
       imagename:
         required: true
         type: string
+      buildtype:
+        required: false
+        default: docker
+        type: string
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -21,11 +25,6 @@ jobs:
     #   run: docker build . --file Dockerfile --tag ${{ inputs.imagename }}:$(date +%s)
     - name: Set Tag
       run:  echo "TAG=$(echo $GITHUB_SHA)" >> $GITHUB_ENV;
-    - name: Set docker secret
-      run: |  
-        echo "DOCKERHUB_USERNAME=$(echo $secrets.DOCKERHUB_USERNAME)" >> $GITHUB_ENV;
-        echo "DOCKERHUB_PASSWORD=$(echo $secrets.DOCKERHUB_PASSWORD)" >> $GITHUB_ENV;
-
     - name: Kaniko build
       uses: aevea/action-kaniko@master
       with:
@@ -35,3 +34,10 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         cache: true
         cache_registry: insuranceitteam/${{ inputs.imagename }}
+    - name: Container image scan
+      uses: Azure/container-scan@v0.1
+      with:
+        # Docker image to scan
+        image-name: insuranceitteam/${{ inputs.imagename }}:${{ env.TAG }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
