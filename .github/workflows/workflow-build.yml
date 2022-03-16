@@ -15,16 +15,23 @@ on:
         required: true
       DOCKERHUB_PASSWORD:
         required: true
+    outputs:
+      imgname:
+        value: ${{ jobs.build.outputs.output1 }}
 
 jobs:
   build:
     runs-on: self-hosted
+    outputs:
+      output1: ${{ steps.step1.outputs.imgname }}
     steps:
     - uses: actions/checkout@v2
     # - name: Build the Docker image
     #   run: docker build . --file Dockerfile --tag ${{ inputs.imagename }}:$(date +%s)
     - name: Set Tag
-      run:  echo "TAG=$(echo $GITHUB_SHA)" >> $GITHUB_ENV;
+      run: echo "TAG=$(echo $GITHUB_SHA)" >> $GITHUB_ENV;
+    - id: step1
+      run: echo "::set-output name=imgname::insuranceitteam/${{ inputs.imagename }}:${{ env.TAG }}"
     - name: Kaniko build
       uses: aevea/action-kaniko@master
       with:
@@ -34,10 +41,4 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         cache: true
         cache_registry: insuranceitteam/${{ inputs.imagename }}
-    - name: Container image scan
-      uses: Azure/container-scan@v0.1
-      with:
-        # Docker image to scan
-        image-name: insuranceitteam/${{ inputs.imagename }}:${{ env.TAG }}
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+

@@ -1,0 +1,28 @@
+name: Reusable workflow example
+
+on:
+  workflow_call:
+    inputs:
+      imagename:
+        required: true
+        type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_PASSWORD:
+        required: true
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v2
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag ${{ inputs.imagename }}:$(date +%s)
+    - name: Container image scan
+      uses: Azure/container-scan@v0.1
+      with:
+        # Docker image to scan
+        image-name: {{ inputs.imagename }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
