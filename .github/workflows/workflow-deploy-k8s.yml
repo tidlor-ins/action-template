@@ -9,6 +9,8 @@ on:
 jobs:
   update_tag:
     runs-on: self-hosted
+    environment:
+      name: production
     steps:
     - uses: actions/checkout@v3
     - name: Set variable
