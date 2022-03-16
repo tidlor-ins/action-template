@@ -19,6 +19,7 @@ on:
       imgname:
         value: ${{ jobs.build.outputs.output1 }}
 
+
 jobs:
   build:
     runs-on: self-hosted
