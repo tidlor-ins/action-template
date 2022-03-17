@@ -26,6 +26,7 @@ jobs:
     outputs:
       output1: ${{ steps.step1.outputs.imgname }}
     steps:
+    - uses: actions/checkout@v3
     - name: Set Tag
       run: echo "TAG=$(echo $GITHUB_SHA)" >> $GITHUB_ENV;
     - id: step1
@@ -39,4 +40,5 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         cache: true
         cache_registry: insuranceitteam/${{ inputs.imagename }}
+        context: Dockerfile
 
