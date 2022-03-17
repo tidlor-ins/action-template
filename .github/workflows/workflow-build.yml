@@ -28,7 +28,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Set Tag
-      run: echo "TAG=$(echo $GITHUB_SHA)" >> $GITHUB_ENV;
+      run: echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
     - id: step1
       run: echo "::set-output name=imgname::${{ inputs.imagename }}:${{ env.TAG }}"
     - name: Kaniko build
