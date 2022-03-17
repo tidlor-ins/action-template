@@ -26,6 +26,18 @@ jobs:
     outputs:
       output1: ${{ steps.step1.outputs.imgname }}
     steps:
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: go, javascript
+
+    # Here is where you build your code
+    - run: |
+        make bootstrap
+        make release
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
     - name: Set Tag
       run: echo "TAG=$(echo $GITHUB_SHA)" >> $GITHUB_ENV;
     - id: step1
