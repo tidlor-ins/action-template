@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Set variable
       run: |-
-        echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+        echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV  
     - name: Is dev?
       if: env.BRANCH == 'dev' 
       run: echo "DIR=deploy/dev" >> $GITHUB_ENV;
@@ -35,7 +35,7 @@ jobs:
     - name: Set up Kustomize
       uses: imranismail/setup-kustomize@v1
     - name: Set Tag
-      run:  echo "TAG=$(echo $GITHUB_SHA)" >> $GITHUB_ENV;   
+      run:  echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
     - name: Patch kustomize
       run: |-
         cd ${{ env.DIR }}
