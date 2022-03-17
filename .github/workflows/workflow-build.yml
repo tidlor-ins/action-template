@@ -40,5 +40,5 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         cache: true
         cache_registry: insuranceitteam/${{ inputs.imagename }}
-        context: Dockerfile
+
 
