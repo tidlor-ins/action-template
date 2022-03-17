@@ -26,21 +26,6 @@ jobs:
     outputs:
       output1: ${{ steps.step1.outputs.imgname }}
     steps:
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: go, javascript, csharp
-
-    # Here is where you build your code
-    - run: |
-        make bootstrap
-        make release
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
-    - uses: actions/checkout@v2
-    # - name: Build the Docker image
-    #   run: docker build . --file Dockerfile --tag ${{ inputs.imagename }}:$(date +%s)
     - name: Set Tag
       run: echo "TAG=$(echo $GITHUB_SHA)" >> $GITHUB_ENV;
     - id: step1
