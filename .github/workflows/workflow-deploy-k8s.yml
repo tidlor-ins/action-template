@@ -17,10 +17,13 @@ jobs:
     - name: Is dev?
       if: env.BRANCH == 'dev' 
       run: echo "DIR=deploy/dev" >> $GITHUB_ENV;
-    - name: Is dev?
+    - name: Is develop?
       if: env.BRANCH == 'develop' 
       run: echo "DIR=deploy/dev" >> $GITHUB_ENV;
-    - name: Is dev?
+    - name: Is sit?
+      if: env.BRANCH == 'sit'
+      run: echo "DIR=deploy/sit" >> $GITHUB_ENV;
+    - name: Is uat?
       if: env.BRANCH == 'uat'
       run: echo "DIR=deploy/uat" >> $GITHUB_ENV;
     - name: Is preprod?
