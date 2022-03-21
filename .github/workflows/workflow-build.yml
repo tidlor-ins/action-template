@@ -40,6 +40,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        plugins: |
+          ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/git', '@semantic-release/github']
     - run: |
         echo $RELEASE_VERSION
         echo $RELEASE_MAJOR
