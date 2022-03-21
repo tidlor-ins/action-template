@@ -40,7 +40,7 @@ jobs:
       run: |-
         cd ${{ env.DIR }}
         echo "kustomize update ${{ env.DIR }}"
-        kustomize edit set image insuranceitteam/${{ inputs.imagename }}:${{ env.TAG }}
+        kustomize edit set image insuranceitteam/${{ inputs.imagename }}
         cat kustomization.yml
 
     - name: Commit & Push changes
