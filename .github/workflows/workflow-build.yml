@@ -28,6 +28,7 @@ jobs:
     steps:
 
     - uses: actions/checkout@v3
+    - run: semantic-release
 
     - uses: codfish/semantic-release-action@v1
       with:
