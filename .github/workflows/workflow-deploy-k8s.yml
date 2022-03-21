@@ -35,7 +35,9 @@ jobs:
     - name: Set up Kustomize
       uses: imranismail/setup-kustomize@v1
     - name: Set Tag
-      run:  echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
+      run: | 
+        echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
+        echo ${{ inputs.imagename }};
     - name: Patch kustomize
       run: |-
         cd ${{ env.DIR }}
