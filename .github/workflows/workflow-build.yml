@@ -41,13 +41,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+    - name: Set Tag
       run: |
         echo $RELEASE_VERSION
         echo $RELEASE_MAJOR
         echo $RELEASE_MINOR
         echo $RELEASE_PATCH
-    - name: Set Tag
-      run: |
         if $github.ref =='refs/heads/master' && $RELEASE_VERSION !='' ; then
         echo "TAG=$(echo v$RELEASE_VERSION | cut -c 1-7)" >> $GITHUB_ENV;
         else
