@@ -43,21 +43,10 @@ jobs:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       
     - name: Set Tag
-      run: |
-        echo $RELEASE_VERSION
-        echo $RELEASE_MAJOR
-        echo $RELEASE_MINOR
-        echo $RELEASE_PATCH
-        echo $GITHUB_REF
-        if [$GITHUB_REF =="refs/heads/master"]
-        then echo "TAG=$(echo v$RELEASE_VERSION | cut -c 1-7)" >> $GITHUB_ENV;    
-        else
-        echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
-        fi
-    #   if: github.ref == 'refs/heads/master' && "${{ RELEASE_VERSION != '' }}"
-    #   run: echo "TAG=$(echo v$RELEASE_VERSION | cut -c 1-7)" >> $GITHUB_ENV;
-    # - if: github.ref != 'refs/heads/master'
-    #   run: echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
+      if: github.ref == 'refs/heads/master' && "${{ RELEASE_VERSION != '' }}"
+      run: echo "TAG=$(echo v$RELEASE_VERSION | cut -c 1-7)" >> $GITHUB_ENV;
+    - if: github.ref != 'refs/heads/master'
+      run: echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
     - id: step1
       run: echo "::set-output name=imgname::${{ inputs.imagename }}:${{ env.TAG }}"
     - name: Kaniko build
