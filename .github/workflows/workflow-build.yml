@@ -48,7 +48,8 @@ jobs:
         echo $RELEASE_MAJOR
         echo $RELEASE_MINOR
         echo $RELEASE_PATCH
-        if $GITHUB_REF =='refs/heads/master' && $RELEASE_VERSION !='' ; then
+        echo $GITHUB_REF
+        if $GITHUB_REF =="refs/heads/master" && $RELEASE_VERSION !="" ; then
         echo "TAG=$(echo v$RELEASE_VERSION | cut -c 1-7)" >> $GITHUB_ENV;
         else
         echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
