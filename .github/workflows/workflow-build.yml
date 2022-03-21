@@ -43,7 +43,7 @@ jobs:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       
     - name: Set Tag
-      if: github.ref == 'refs/heads/master' && "${{ RELEASE_VERSION != '' }}"
+      if: github.ref == 'refs/heads/master' && "${{ env.RELEASE_VERSION != '' }}"
       run: echo "TAG=$(echo v$RELEASE_VERSION | cut -c 1-7)" >> $GITHUB_ENV;
     - if: github.ref != 'refs/heads/master'
       run: echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
