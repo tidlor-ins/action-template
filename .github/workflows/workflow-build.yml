@@ -29,35 +29,35 @@ jobs:
     outputs:
       output1: ${{ steps.step1.outputs.imgname }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: codfish/semantic-release-action@v1
-        with:
-          branches: |
-            [
-              'master',
-              'dev',
-            ]
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: |
-          echo $RELEASE_VERSION
-          echo $RELEASE_MAJOR
-          echo $RELEASE_MINOR
-          echo $RELEASE_PATCH
-      - name: Set Tag
-        run: echo "TAG=$(echo v$RELEASE_VERSION | cut -c 1-7)" >> $GITHUB_ENV;
-      - id: step1
-        run: echo "::set-output name=imgname::${{ inputs.imagename }}:${{ env.TAG }}"
-      - name: Kaniko build
-        uses: aevea/action-kaniko@master
-        with:
-          image: insuranceitteam/${{ inputs.imagename }}
-          tag: ${{ env.TAG }}
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          cache: true
-          cache_registry: insuranceitteam/${{ inputs.imagename }}
+    - uses: actions/checkout@v3
+    - uses: codfish/semantic-release-action@v1
+      with:
+        branches: |
+          [
+            'master',
+            'dev',
+          ]
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - run: |
+        echo $RELEASE_VERSION
+        echo $RELEASE_MAJOR
+        echo $RELEASE_MINOR
+        echo $RELEASE_PATCH
+    - name: Set Tag
+      run: echo "TAG=$(echo v$RELEASE_VERSION | cut -c 1-7)" >> $GITHUB_ENV;
+    - id: step1
+      run: echo "::set-output name=imgname::${{ inputs.imagename }}:${{ env.TAG }}"
+    - name: Kaniko build
+      uses: aevea/action-kaniko@master
+      with:
+        image: insuranceitteam/${{ inputs.imagename }}
+        tag: ${{ env.TAG }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        cache: true
+        cache_registry: insuranceitteam/${{ inputs.imagename }}
   build:
     runs-on: self-hosted
     if: github.ref != 'refs/heads/master'
