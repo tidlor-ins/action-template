@@ -21,14 +21,33 @@ on:
 
 
 jobs:
-  build:
+  release:
+    if: github.ref == 'refs/heads/master'
     runs-on: self-hosted
     outputs:
       output1: ${{ steps.step1.outputs.imgname }}
     steps:
-
-
-        
+      - uses: actions/checkout@v3
+      - uses: codfish/semantic-release-action@v1
+        with:
+          branches: |
+            [
+              'master',
+              'dev',
+            ]
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: |
+          echo $RELEASE_VERSION
+          echo $RELEASE_MAJOR
+          echo $RELEASE_MINOR
+          echo $RELEASE_PATCH
+  build:
+    runs-on: self-hosted
+    outputs:
+      output1: ${{ steps.step1.outputs.imgname }}
+    steps:      
     - uses: actions/checkout@v3
     - name: Set Tag
       run: echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
