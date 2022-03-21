@@ -16,7 +16,7 @@ on:
       DOCKERHUB_PASSWORD:
         required: true
       NPM_TOKEN:
-        required: true
+        required: false
     outputs:
       imgname:
         value: ${{ jobs.build.outputs.output1 }}
