@@ -5,7 +5,7 @@ name: CI
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branc
-
+  
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -25,6 +25,7 @@ jobs:
       - name: Run a one-line script
         run: |
           FILE=readme.md
+          echo 'I can "write" without double quotes' >> $FILE
           if [ -f "$FILE" ]; then
           echo "$FILE exists."
           else 
