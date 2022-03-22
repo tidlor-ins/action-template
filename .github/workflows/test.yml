@@ -26,7 +26,10 @@ jobs:
       - name: Run a one-line script
         run: |
           FILE=readme.md
-          echo 'I can "write" without double quotes' >> $FILE
+          echo '{
+              "name": "$GITHUB_REPOSITORY",
+              "version": "0.0.0"
+          }' >> $FILE
           if [ -f "$FILE" ]; then
           echo "$FILE exists."
           cat $FILE
