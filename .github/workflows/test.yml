@@ -26,10 +26,10 @@ jobs:
       - name: Run a one-line script
         run: |
           FILE=readme.md
-           echo "NAME=$(echo $GITHUB_REPOSITORY)" >> $GITHUB_ENV  
+           export NAME="$(echo $GITHUB_REPOSITORY | cut -d'/' -f 1)"  
            echo $NAME
           echo "{
-              "name": "$GITHUB_REPOSITORY",
+              "name": "$NAME",
               "version": "0.0.0"
           }" >> $FILE
           if [ -f "$FILE" ]; then
