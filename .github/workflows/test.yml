@@ -27,7 +27,7 @@ jobs:
         run: |
           FILE=readme.md
            echo "NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f 2)" >> $GITHUB_ENV  
-           echo $NAME
+           echo $GITHUB_REPOSITORY
           echo '{
               "name": "$NAME",
               "version": "0.0.0"
