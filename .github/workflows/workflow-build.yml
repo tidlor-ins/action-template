@@ -29,6 +29,21 @@ jobs:
       output1: ${{ steps.step1.outputs.imgname }}
     steps:   
     - uses: actions/checkout@v3
+    - name: check pagekage.js
+      run: |
+          FILE=package.json
+           export NAME="$(echo $GITHUB_REPOSITORY | cut -d'/' -f 2)"  
+           echo $NAME  
+          if [ -f "$FILE" ]; then
+          echo "$FILE exists."
+          cat $FILE
+          else 
+          echo "$FILE does not exist."
+          echo "{
+              "name": "$NAME",
+              "version": "0.0.0"
+          }" >> $FILE
+          fi
     - name: Is master?
       if: github.ref == 'refs/heads/master'
       uses: codfish/semantic-release-action@v1
