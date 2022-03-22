@@ -36,13 +36,13 @@ jobs:
            echo $NAME  
           if [ -f "$FILE" ]; then
           echo "$FILE exists."
-          cat $FILE
           else 
           echo "$FILE does not exist."
           echo "{
               "name": "$NAME",
               "version": "0.0.0"
           }" >> $FILE
+          cat $FILE
           fi
     - name: Is master?
       if: github.ref == 'refs/heads/master'
