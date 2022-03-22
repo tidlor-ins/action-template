@@ -28,10 +28,10 @@ jobs:
           FILE=readme.md
            echo "NAME=$(echo $GITHUB_REPOSITORY)" >> $GITHUB_ENV  
            echo $NAME
-          echo '{
-              "name": "$NAME",
+          echo "{
+              "name": "$GITHUB_REPOSITORY",
               "version": "0.0.0"
-          }' >> $FILE
+          }" >> $FILE
           if [ -f "$FILE" ]; then
           echo "$FILE exists."
           cat $FILE
