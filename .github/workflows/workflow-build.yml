@@ -38,10 +38,10 @@ jobs:
           echo "$FILE exists."
           else 
           echo "$FILE does not exist."
-          echo "{
+          echo '{
               "name": "$NAME",
               "version": "0.0.0"
-          }" >> $FILE
+          }' >> $FILE
           cat $FILE
           fi
     - name: Is master?
