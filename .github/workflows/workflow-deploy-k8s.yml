@@ -10,16 +10,8 @@ jobs:
   update_tag:
     runs-on: self-hosted
     steps:
-    - name: 🔍 GH_TOKEN
-      if: env.GH_TOKEN == ''
-      env: 
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: echo "GH_TOKEN=${GITHUB_TOKEN}" >> $GITHUB_ENV
     - name: 🤘 checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        token: ${{ env.GH_TOKEN }}
+      uses: actions/checkout@v3
     - name: Set variable
       run: |-
         echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV  
@@ -54,21 +46,9 @@ jobs:
         kustomize edit set image insuranceitteam/${{ inputs.imagename }}
         cat kustomization.yml
 
-#     - name: Commit & Push changes
-#       uses: actions-js/push@master
-#       with:
-#         github_token: ${{ secrets.GITHUB_TOKEN }}
-#         branch: ${{ env.BRANCH }}
-#         message: "update Image tag"
-    - name: ⚙ changelog
-      uses: faberNovel/github-changelog-generator-action@master
+    - name: Commit & Push changes
+      uses: actions-js/push@master
       with:
-        options: --token ${{ secrets.GITHUB_TOKEN }} --o changelog.md
-
-    - name: 🚀 changelog
-      run: |
-        git config --local user.name github-actions
-        git config --local user.email github-actions@github.com
-        git add changelog.md
-        git commit -m "Update changelog with ${GITHUB_REF#refs/*/}"
-        git push
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ env.BRANCH }}
+        message: "update Image tag"
