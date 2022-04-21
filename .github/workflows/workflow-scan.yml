@@ -1,4 +1,4 @@
-name: Reusable workflow example
+name: Scan Image
 
 on:
   workflow_call:
