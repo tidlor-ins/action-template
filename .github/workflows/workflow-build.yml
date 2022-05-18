@@ -75,18 +75,18 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         cache: true
         cache_registry: insuranceitteam/${{ inputs.imagename }}
-#     - name: Run Trivy vulnerability scanner
-#       uses: aquasecurity/trivy-action@master
-#       with:
-#         image-ref: 'insuranceitteam/${{ inputs.imagename }}:${{ env.TAG }}'
-#         format: 'table'
-#         exit-code: '1'
-#         ignore-unfixed: true
-#         vuln-type: 'os,library'
-#         severity: 'CRITICAL,HIGH'
-#       env:
-#         TRIVY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-#         TRIVY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'insuranceitteam/${{ inputs.imagename }}:${{ env.TAG }}'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
+      env:
+        TRIVY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        TRIVY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
 
 
