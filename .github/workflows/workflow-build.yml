@@ -28,42 +28,69 @@ jobs:
     outputs:
       output1: ${{ steps.step1.outputs.imgname }}
     steps:   
-    - uses: actions/checkout@v3
-    - name: check pagekage.js
-      run: |
-          FILE=package.json
-           export NAME="$(echo $GITHUB_REPOSITORY | cut -d'/' -f 2)"  
-           echo $NAME  
-          if [ -f "$FILE" ]; then
-          echo "$FILE exists."
-          else 
-          echo "$FILE does not exist."
-          echo "{
-              \"name\": \"$NAME\",
-              \"version\": \"0.0.0\"
-          }" >> $FILE
-          cat $FILE
-          fi
-    - name: Is master?
-      if: github.ref == 'refs/heads/master'
-      uses: codfish/semantic-release-action@v1
+    - uses: actions/checkout@v1
+#     - name: check pagekage.js
+#       run: |
+#           FILE=package.json
+#            export NAME="$(echo $GITHUB_REPOSITORY | cut -d'/' -f 2)"  
+#            echo $NAME  
+#           if [ -f "$FILE" ]; then
+#           echo "$FILE exists."
+#           else 
+#           echo "$FILE does not exist."
+#           echo "{
+#               \"name\": \"$NAME\",
+#               \"version\": \"0.0.0\"
+#           }" >> $FILE
+#           cat $FILE
+#           fi
+#     - name: Is master?
+#       if: github.ref == 'refs/heads/master'
+#       uses: codfish/semantic-release-action@v1
+#       with:
+#         branches: |
+#           [
+#             'master',
+#             'dev',
+#           ]
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        
+    - uses: paulhatch/semantic-version@v4.0.2
+      id: versioning
       with:
-        branches: |
-          [
-            'master',
-            'dev',
-          ]
+          # The prefix to use to identify tags
+        tag_prefix: "v"
+          # A string which, if present in a git commit, indicates that a change represents a
+          # major (breaking) change, supports regular expressions wrapped with '/'
+        major_pattern: "BREAKING CHANGE:"
+          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+        minor_pattern: "feat:"
+          # A string to determine the format of the version output
+        format: "${major}.${minor}.${patch}"
+          
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: v${{ steps.versioning.outputs.version }}
+        release_name: v${{ steps.versioning.outputs.version }}
+          
+    - name: Output Step                             # Optional: Prints the new version
+      env:
+        NEW_TAG: v${{ steps.versioning.outputs.version }}
+      run: echo "new tag&Release $NEW_TAG"
       
     - name: Set Tag
       if: github.ref == 'refs/heads/master'
-      run: echo "TAG=$(echo v$RELEASE_VERSION | cut -c 1-7)" >> $GITHUB_ENV;
+      run: echo "TAG=$(echo $NEW_TAG | cut -c 1-7)" >> $GITHUB_ENV;
     - if: github.ref != 'refs/heads/master'
       run: echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
-    - if: env.TAG == 'v'
-      run: echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
+#     - if: env.TAG == 'v'
+#       run: echo "=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
     - id: step1
       run: echo "::set-output name=imgname::${{ inputs.imagename }}:${{ env.TAG }}"
     - name: Kaniko build
