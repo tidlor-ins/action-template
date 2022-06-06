@@ -1,8 +1,12 @@
-name: Build
+name: sonarqube-scan
+
 on:
-  push:
-    branches:
-      - master # or the name of your main branch
+  workflow_call:
+    secrets:
+      SONAR_TOKEN:
+        required: true
+      SONAR_HOST_URL:
+        required: true
 
 jobs:
   build:
