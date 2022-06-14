@@ -12,6 +12,10 @@ jobs:
     steps:
     - name: 🤘 checkout
       uses: actions/checkout@v3
+       with:
+         repository: 'tidlor-ins/argoCD'
+         ref: 'master'
+         token: ${{ secrets.my_pat }}
     - name: Set variable
       run: |-
         echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV  
@@ -41,15 +45,17 @@ jobs:
         echo ${{ inputs.imagename }};
     - name: Patch kustomize
       run: |-
-        cd ${{ env.DIR }}
+        cd ${{ github.event.repository.name }}/${{ env.DIR }}
         echo "kustomize update ${{ env.DIR }}"
         kustomize edit set image insuranceitteam/${{ inputs.imagename }}
         cat kustomization.yml
-
-    - name: Commit & Push changes
-      uses: actions-js/push@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ env.BRANCH }}
-        message: "update Image tag"
-        force: true
+        
+    - name: Push update manifesh to ArgoCD repo
+      run: |
+        echo "REPO_NAME=${{ github.event.repository.name }}"
+        ls
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add .
+        git commit -m "update manifesh"
+        git push
