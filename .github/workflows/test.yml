@@ -20,25 +20,15 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          repository: 'https://github.com/tidlor-ins/argoCD.git'
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: |
-          FILE=readme.md
-           export NAME="$(echo $GITHUB_REPOSITORY | cut -d'/' -f 2)"  
-           echo $NAME
-          echo "{
-              "name": "$NAME",
-              "version": "0.0.0"
-          }" >> $FILE
-          if [ -f "$FILE" ]; then
-          echo "$FILE exists."
-          cat $FILE
-          cat README.md
-          else 
-          echo "$FILE does not exist."
-          fi
+          ls
+          
 
 #       # Runs a set of commands using the runners shell
 #       - name: Run a multi-line script
