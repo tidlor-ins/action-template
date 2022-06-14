@@ -22,7 +22,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          repository: 'tidlor-ins/argoCD'
+          repository: 'tidlor-ins/argoCD.git'
           ref: 'master'
 
       # Runs a single command using the runners shell
