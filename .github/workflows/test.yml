@@ -25,7 +25,6 @@ jobs:
           repository: 'tidlor-ins/argoCD'
           ref: 'master'
           token: ${{ secrets.my_pat }}
-          path: product-fact.api
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
