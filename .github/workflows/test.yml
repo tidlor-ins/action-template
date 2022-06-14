@@ -24,7 +24,7 @@ jobs:
         with:
           repository: 'tidlor-ins/argoCD'
           ref: 'master'
-          token: '${{ secrets.GITHUB_TOKEN }}'
+          token: ${{ secrets.my_pat }}
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
