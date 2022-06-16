@@ -6,6 +6,9 @@ on:
       imagename:
         required: true
         type: string
+    secrets:
+      my_pat:
+        required: true
 jobs:
   update_tag:
     runs-on: self-hosted
