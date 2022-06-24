@@ -19,8 +19,7 @@ jobs:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - run: |
           export DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=0   
-          export no_proxy=ins-gitlab.ntl.co.th
-          export PATH=\"$PATH:$HOME/.dotnet/tools\"
+          export PATH=$PATH:$HOME/.dotnet/tools
           dotnet sonarscanner begin /k:\"tidlor-ins_product-fact.api\" /d:sonar.login=\"${{ secrets.SONAR_TOKEN }}\" /d:\"sonar.host.url=${{ secrets.SONAR_HOST_URL }}\" /d:sonar.verbose=true 
           dotnet restore -s http://api.nuget.org/v3/index.json
           dotnet build
