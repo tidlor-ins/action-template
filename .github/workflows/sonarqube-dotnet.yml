@@ -2,6 +2,10 @@ name: sonarqube-scan
 
 on:
   workflow_call:
+    inputs:
+      projectkey:
+        required: false
+        type: string
     secrets:
       SONAR_TOKEN:
         required: true
@@ -21,7 +25,7 @@ jobs:
           export DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=0   
           export PATH=$PATH:/root/.dotnet/tools
           echo $PATH
-          dotnet sonarscanner begin /k:"tidlor-ins_product-fact.api" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.verbose=true 
+          dotnet sonarscanner begin /k:"${{ inputs.projectkey }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.verbose=true 
           dotnet restore -s http://api.nuget.org/v3/index.json
           dotnet build
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
