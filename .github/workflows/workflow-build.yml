@@ -104,7 +104,8 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         cache: true
-        cache_registry: insuranceitteam/${{ inputs.imagename }}
+        cache_registry: insuranceitteam/cache
+#         cache_registry: insuranceitteam/${{ inputs.imagename }}
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
