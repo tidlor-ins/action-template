@@ -91,7 +91,7 @@ jobs:
       if: github.ref == 'refs/heads/master'
       run: |
           echo v${{ steps.versioning.outputs.version }}
-          echo "TAG=$(echo $NEW_TAG | cut -c 1-7)" >> $GITHUB_ENV;
+          echo "TAG=$(echo v${{ steps.versioning.outputs.version }} | cut -c 1-7)" >> $GITHUB_ENV;
     - if: github.ref != 'refs/heads/master'
       run: echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
 #     - if: env.TAG == 'v'
