@@ -89,7 +89,9 @@ jobs:
       
     - name: Set Tag
       if: github.ref == 'refs/heads/master'
-      run: echo "TAG=$(echo $NEW_TAG | cut -c 1-7)" >> $GITHUB_ENV;
+      run: |
+          echo $NEW_TAG
+          echo "TAG=$(echo $NEW_TAG | cut -c 1-7)" >> $GITHUB_ENV;
     - if: github.ref != 'refs/heads/master'
       run: echo "TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
 #     - if: env.TAG == 'v'
